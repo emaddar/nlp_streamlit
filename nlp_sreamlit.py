@@ -130,6 +130,11 @@ if button:
         grid_en_1 = make_grid(1,2)
         with grid_en_1[0][0] :
             with st.expander("See text displacy"):
+                st.markdown("""
+                ### Model :
+
+                    By selecting this particular model, you have opted to utilize the Spacy pretrained model known as "en_core_web_sm."
+                """)
                 dep_svg = displacy.render(doc, style="ent", jupyter=False)
                 st.markdown(dep_svg, unsafe_allow_html=True)
         with grid_en_1[0][1] :
