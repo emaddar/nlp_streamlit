@@ -205,3 +205,21 @@ if button:
                 dep_svg = displacy.render(doc_our_model, style="ent", jupyter=False)
                 st.markdown(dep_svg, unsafe_allow_html=True)
 
+    from transformers import AutoTokenizer, AutoModelForTokenClassification
+    from transformers import pipeline
+    import streamlit as st
+
+    st.header("test")
+    tokenizer = AutoTokenizer.from_pretrained("dslim/bert-base-NER")
+    model = AutoModelForTokenClassification.from_pretrained("dslim/bert-base-NER")
+
+    nlp = pipeline("ner", model=model, tokenizer=tokenizer)
+
+    ner_results = nlp(input_text)
+
+    import pandas as pd
+
+    # assuming your data is stored in a variable called 'data'
+    df = pd.DataFrame(ner_results)
+
+    st.write(df)
