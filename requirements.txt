@@ -6,3 +6,5 @@ matplotlib
 langdetect
 transformers
 torch
+inltk
+flair

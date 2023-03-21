@@ -236,7 +236,20 @@ if button:
             with st.expander("See text displacy"):
                 dep_svg = displacy.render(doc_our_model, style="ent", jupyter=False)
                 st.markdown(dep_svg, unsafe_allow_html=True)
+    from flair.data import Sentence
+    from flair.models import SequenceTagger
 
+    # load tagger
+    tagger = SequenceTagger.load("flair/ner-french")
+
+    # make example sentence
+    sentence = Sentence("George Washington est allé à Washington")
+
+    # predict NER tags
+    tagger.predict(sentence)
+
+    # print sentence
+    st.write(sentence)
 
 
    
