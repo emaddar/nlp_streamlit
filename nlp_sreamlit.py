@@ -5,6 +5,10 @@ from langdetect import detect
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from transformers import AutoTokenizer, AutoModelForTokenClassification
+from transformers import pipeline
+import streamlit as st
+import functions
 
 
 st.set_page_config(
@@ -66,18 +70,12 @@ if button:
 
         st.header("Entity visualizer")
 
-        # ent_html = displacy.render(doc, style="ent", jupyter=False)
-
-        # st.markdown(ent_html, unsafe_allow_html=True)
-  
-
-
-
-
-
         grid_photo = make_grid(1,2)
         with grid_photo[0][0]:
             st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/SpaCy_logo.svg/1200px-SpaCy_logo.svg.png")
+        with grid_photo[0][1]:
+            st.image("https://assets.stickpng.com/images/6308b84661b3e2a522f01468.png")
+        
         grid_en = make_grid(2,4)
 
         with grid_en[0][0]:
@@ -107,13 +105,40 @@ if button:
                     st.pyplot(fig)
             else : 
                 st.warning('This model can not identify any entity', icon="⚠️")
+        
+        with grid_en[0][2]:
+                tokenizer = AutoTokenizer.from_pretrained("dslim/bert-base-NER")
+                model = AutoModelForTokenClassification.from_pretrained("dslim/bert-base-NER")
 
+                nlp = pipeline("ner", model=model, tokenizer=tokenizer)
+
+                ner_results = nlp(input_text)
+
+
+                df, count_df = functions.process_ner_results(ner_results)
+                if len(df) >= 1 :
+                    st.dataframe(count_df)
+                    with grid_en[0][3]:
+                        fig = plt.figure(figsize=(10,6))
+                        sns.barplot(count_df, x= "entity", y = 'count')
+                        st.pyplot(fig)
+                else : 
+                    st.warning('This model can not identify any entity', icon="⚠️")
+
+                
+                
         grid_en_1 = make_grid(1,2)
         with grid_en_1[0][0] :
             with st.expander("See text displacy"):
                 dep_svg = displacy.render(doc, style="ent", jupyter=False)
                 st.markdown(dep_svg, unsafe_allow_html=True)
-
+        with grid_en_1[0][1] :
+            with st.expander("See more"):
+                st.markdown("""
+                ### Model description
+                bert-base-NER is a fine-tuned BERT model that is ready to use for Named Entity Recognition and achieves state-of-the-art performance for the NER task. It has been trained to recognize four types of entities: location (LOC), organizations (ORG), person (PER) and Miscellaneous (MISC).
+                """)
+                st.dataframe(df) 
             
 
     else:
@@ -205,21 +230,6 @@ if button:
                 dep_svg = displacy.render(doc_our_model, style="ent", jupyter=False)
                 st.markdown(dep_svg, unsafe_allow_html=True)
 
-    from transformers import AutoTokenizer, AutoModelForTokenClassification
-    from transformers import pipeline
-    import streamlit as st
 
-    st.header("test")
-    tokenizer = AutoTokenizer.from_pretrained("dslim/bert-base-NER")
-    model = AutoModelForTokenClassification.from_pretrained("dslim/bert-base-NER")
 
-    nlp = pipeline("ner", model=model, tokenizer=tokenizer)
-
-    ner_results = nlp(input_text)
-
-    import pandas as pd
-
-    # assuming your data is stored in a variable called 'data'
-    df = pd.DataFrame(ner_results)
-
-    st.write(df)
+   
