@@ -132,8 +132,7 @@ if button:
             with st.expander("See text displacy"):
                 st.markdown("""
                 ### Model :
-
-                    By selecting this particular model, you have opted to utilize the Spacy pretrained model known as "en_core_web_sm."
+                By selecting this particular model, you have opted to utilize the Spacy pretrained model known as `en_core_web_sm`.
                 """)
                 dep_svg = displacy.render(doc, style="ent", jupyter=False)
                 st.markdown(dep_svg, unsafe_allow_html=True)
