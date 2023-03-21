@@ -5,4 +5,4 @@ seaborn
 matplotlib
 langdetect
 transformers
-PyTorch
+torch
