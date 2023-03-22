@@ -162,10 +162,10 @@ if button:
         st.header("Entity visualizer")
 
 
-        grid_photo = make_grid(1,2)
-        with grid_photo[0][0]:
+        grid_photo_1 = make_grid(1,2)
+        with grid_photo_1[0][0]:
             st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/SpaCy_logo.svg/1200px-SpaCy_logo.svg.png")
-        with grid_photo[0][1]:
+        with grid_photo_1[0][1]:
             st.image("https://safaridesmetiers.tech/wp-content/uploads/2019/08/Simplon-logo-simplon.co_.png")
         grid_fr = make_grid(2,4)
 
@@ -236,13 +236,42 @@ if button:
             with st.expander("See text displacy"):
                 dep_svg = displacy.render(doc_our_model, style="ent", jupyter=False)
                 st.markdown(dep_svg, unsafe_allow_html=True)
-    st.header("test")
-    from transformers import AutoTokenizer, AutoModelForTokenClassification
-    tokenizer = AutoTokenizer.from_pretrained("Jean-Baptiste/camembert-ner")
-    model = AutoModelForTokenClassification.from_pretrained("Jean-Baptiste/camembert-ner")
-    from transformers import pipeline
+    
 
-    nlp = pipeline('ner', model=model, tokenizer=tokenizer, aggregation_strategy="simple")
-    st.write(nlp("Apple est créée le 1er avril 1976 dans le garage de la maison d'enfance de Steve Jobs à Los Altos en Californie par Steve Jobs, Steve Wozniak et Ronald Wayne14, puis constituée sous forme de société le 3 janvier 1977 à l'origine sous le nom d'Apple Computer, mais pour ses 30 ans et pour refléter la diversification de ses produits, le mot « computer » est retiré le 9 janvier 2015."))
+        grid_photo_2 = make_grid(1,2)
+        with grid_photo_2[0][0]:
+            st.image("https://assets.stickpng.com/images/6308b84661b3e2a522f01468.png")
+        # with grid_photo_2[0][1]:
+        #     st.image("https://safaridesmetiers.tech/wp-content/uploads/2019/08/Simplon-logo-simplon.co_.png")
+
+        grid_fr_2 = make_grid(2,4)
+
+        with grid_fr_2[0][0]:
+            
+            from transformers import AutoTokenizer, AutoModelForTokenClassification
+            tokenizer = AutoTokenizer.from_pretrained("Jean-Baptiste/camembert-ner")
+            model = AutoModelForTokenClassification.from_pretrained("Jean-Baptiste/camembert-ner")
+            from transformers import pipeline
+
+            nlp = pipeline('ner', model=model, tokenizer=tokenizer, aggregation_strategy="simple")
+            nlp_camem = (nlp(input_text))
+            df = pd.DataFrame(nlp_camem)
+            df = df.rename(columns={'entity_group': 'entity'})
+            count_df = df.groupby('entity').count().reset_index()[['entity', 'score']]
+            count_df = count_df.rename(columns={'score': 'count'})
+
+            # check if df is empty
+            if len(count_df) >= 1 :
+                
+                st.write(count_df)
+
+                with grid_fr_2[0][1]:
+                    fig = plt.figure(figsize=(10,6))
+                    sns.barplot(count_df, x= "entity", y = 'count')
+                    st.pyplot(fig)
+            else : 
+                st.warning('This model can not identify any entity', icon="⚠️")       
+
+
 
    
