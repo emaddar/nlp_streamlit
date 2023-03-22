@@ -240,7 +240,7 @@ if button:
 
         grid_photo_2 = make_grid(1,2)
         with grid_photo_2[0][0]:
-            st.image("https://assets.stickpng.com/images/6308b84661b3e2a522f01468.png")
+            st.image("https://www.actuia.com/wp-content/uploads/2019/11/Camembert-model-linguistique-France-Culture.png")
         # with grid_photo_2[0][1]:
         #     st.image("https://safaridesmetiers.tech/wp-content/uploads/2019/08/Simplon-logo-simplon.co_.png")
 
@@ -256,8 +256,8 @@ if button:
             nlp = pipeline('ner', model=model, tokenizer=tokenizer, aggregation_strategy="simple")
             nlp_camem = (nlp(input_text))
             df = pd.DataFrame(nlp_camem)
-            df = df.rename(columns={'entity_group': 'entity'})
-            count_df = df.groupby('entity').count().reset_index()[['entity', 'score']]
+            df_cam = df.rename(columns={'entity_group': 'entity'})
+            count_df = df_cam.groupby('entity').count().reset_index()[['entity', 'score']]
             count_df = count_df.rename(columns={'score': 'count'})
 
             # check if df is empty
@@ -272,6 +272,19 @@ if button:
             else : 
                 st.warning('This model can not identify any entity', icon="⚠️")       
 
+            
 
+        grid_fr_expander_2 = make_grid(1,2)
+        with grid_fr_expander_2[0][0] :
+            with st.expander("See text displacy"):
+                st.markdown("""             
+                ### Model description
+                CamemBERT is a state-of-the-art language model for French based on the RoBERTa model. It is now available on Hugging Face in 6 different versions with varying number of parameters, amount of pretraining data and pretraining data source domains.
+                """)
+                st.dataframe(df_cam)
+        # with grid_fr_expander_2[0][1] :
+        #     with st.expander("See text displacy"):
+        #         dep_svg = displacy.render(doc_our_model, style="ent", jupyter=False)
+        #         st.markdown(dep_svg, unsafe_allow_html=True)
 
    
