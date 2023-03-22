@@ -79,7 +79,7 @@ if button:
         grid_en = make_grid(2,4)
 
         with grid_en[0][0]:
-            
+             
             # Create an empty list to store entities
             entities = []
 
