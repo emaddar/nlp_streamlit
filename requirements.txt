@@ -7,4 +7,3 @@ langdetect
 transformers
 torch
 inltk
-flair
