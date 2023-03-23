@@ -74,7 +74,7 @@ if button:
         with grid_photo[0][0]:
             st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/SpaCy_logo.svg/1200px-SpaCy_logo.svg.png")
         with grid_photo[0][1]:
-            st.image("https://assets.stickpng.com/images/6308b84661b3e2a522f01468.png")
+            st.image("https://miro.medium.com/max/1400/1*NLjiiOFJFmai50NS-SGBVQ.png")
         
         grid_en = make_grid(2,4)
 
