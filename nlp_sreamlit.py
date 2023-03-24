@@ -148,7 +148,7 @@ if button:
                 st.dataframe(df) 
             
 
-    else:
+    elif  language == 'fr':
 
 
         nlp_fr = spacy.load("./models/fr/")     
@@ -287,4 +287,41 @@ if button:
         #         dep_svg = displacy.render(doc_our_model, style="ent", jupyter=False)
         #         st.markdown(dep_svg, unsafe_allow_html=True)
 
-   
+    
+    elif language == 'ar':
+
+        st.header("Arabic Named Entity Recognition")
+
+        
+
+        grid_photo = make_grid(1,2)
+        with grid_photo[0][0]:
+            st.image("https://images.verbling.com/convert/w_1000/https%3A%2F%2Fverbling-user-uploads.s3.amazonaws.com%2F75736031415276259819%2F134fe6d9-35f7-49f7-9088-00d21599e535%2Fweb2_0.jpg")
+
+        grid_ar = make_grid(2,4)
+
+        with grid_ar[0][0]:
+             
+            df, groupby_entity_counts = functions.ar_hugging_face(input_text)
+            # check if df is empty
+            if len(groupby_entity_counts) >= 1 :
+                
+                st.write(groupby_entity_counts)
+
+                with grid_ar[0][1]:
+                    fig = plt.figure(figsize=(10,6))
+                    sns.barplot(groupby_entity_counts, x= "entity", y = 'count')
+                    st.pyplot(fig)
+            else : 
+                st.warning('This model can not identify any entity', icon="⚠️")
+        
+        grid_ar_1 = make_grid(1,2)
+        with grid_ar_1[0][0] :
+            with st.expander("See more"):
+                
+                st.markdown("""
+                Arabic Named Entity Recognition Model
+                Pretrained BERT-based (arabic-bert-base) Named Entity Recognition model for Arabic.
+                """)
+                st.dataframe(df)
+
