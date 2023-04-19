@@ -8,3 +8,4 @@ transformers
 torch
 inltk
 python-dotenv
+sympy
